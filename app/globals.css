@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(23, 104, 242, 0.10), transparent 28%),
+    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.12), transparent 20%),
+    linear-gradient(to bottom, #ffffff, #f8fbff);
+  color: var(--foreground);
+}
+
+input, textarea, select {
+  @apply outline-none;
+}
+
+.prose-soft p {
+  @apply leading-8 text-slate-600;
+}
