@@ -1,37 +1,25 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { LoginForm } from "@/components/LoginForm";
-import { getDictionary } from "@/lib/dictionaries";
-import type { Locale } from "@/lib/i18n";
-
 export default async function LoginPage({
   params,
-  searchParams
 }: {
-  params: Promise<{ locale: Locale }>;
-  searchParams: Promise<{ status?: string }>;
+  params: Promise<{ locale: "tr" | "ar" }>;
 }) {
   const { locale } = await params;
-  const query = await searchParams;
-  const dict = getDictionary(locale);
-  const isAr = locale === "ar";
+  const isArabic = locale === "ar";
 
   return (
-    <main className="mx-auto max-w-xl px-4 py-12 md:px-6">
-      <Card>
-        <CardContent className={isAr ? "text-right" : "text-left"}>
-          <h1 className="text-3xl font-bold">{dict.auth.loginTitle}</h1>
-          <p className="mt-3 text-slate-600">
-            {query.status === "pending"
-              ? isAr
-                ? "الحساب ما زال بانتظار موافقة المدير."
-                : "Hesap hâlâ yönetici onayı bekliyor."
-              : dict.auth.registerDesc}
+    <main className="min-h-screen bg-[linear-gradient(to_bottom,#f8fbff,#eef2ff)] px-4 py-12">
+      <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+        <div className={isArabic ? "text-right" : "text-left"}>
+          <h1 className="text-3xl font-bold text-slate-900">
+            {isArabic ? "قريبًا" : "Yakında"}
+          </h1>
+          <p className="mt-4 text-slate-600 leading-8">
+            {isArabic
+              ? "سيتم إضافة نظام دخول الطلاب لاحقًا. حاليًا يمكنكم إرسال طلب التسجيل عبر صفحة التسجيل."
+              : "Öğrenci giriş sistemi yakında eklenecek. Şimdilik kayıt başvurusunu kayıt sayfası üzerinden gönderebilirsiniz."}
           </p>
-          <div className="mt-8">
-            <LoginForm labels={dict.auth} />
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </main>
   );
 }
