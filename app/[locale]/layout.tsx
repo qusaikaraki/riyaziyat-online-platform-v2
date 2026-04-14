@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Locale } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site-config";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 export default async function LocaleLayout({
