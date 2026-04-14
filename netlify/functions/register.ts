@@ -39,6 +39,13 @@ export const handler: Handler = async (event) => {
       };
     }
 
+    if (!process.env.RESEND_API_KEY) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "RESEND_API_KEY tanımlı değil." }),
+      };
+    }
+
     const html = `
       <h2>Yeni Öğrenci Başvurusu</h2>
       <p><strong>Öğrenci adı:</strong> ${studentName}</p>
@@ -50,7 +57,7 @@ export const handler: Handler = async (event) => {
       <p><strong>Notlar:</strong> ${notes || "-"}</p>
     `;
 
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: "Riyaziyat Academy <onboarding@resend.dev>",
       to: adminEmail,
       subject: `Yeni kayıt başvurusu - ${studentName}`,
@@ -58,9 +65,24 @@ export const handler: Handler = async (event) => {
       replyTo: email,
     });
 
+    console.log("Resend result:", JSON.stringify(result, null, 2));
+
+    if (result.error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: "E-posta gönderilemedi.",
+          details: result.error,
+        }),
+      };
+    }
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true }),
+      body: JSON.stringify({
+        success: true,
+        id: result.data?.id ?? null,
+      }),
     };
   } catch (error) {
     console.error("Register function error:", error);
